@@ -83,7 +83,6 @@ eigenboost = function(X, y, n_rounds = 10, reflection_every = 3, verbose = FALSE
   n_col <- ncol(X)
 
   if (!all(y %in% c(-1, 1))) {
-    print(unique(y[!(y %in% c(-1, 1))]))
     stop("y must only contain values in c(-1,1)")
   }
 
@@ -112,8 +111,6 @@ eigenboost = function(X, y, n_rounds = 10, reflection_every = 3, verbose = FALSE
   terminated_early <- "no"
 
   for(i in seq(n_rounds)){
-
-
 
     if(reflections_type == "identity"){
       # If reflections_type is identity, then the reflection rounds parameter does not apply.

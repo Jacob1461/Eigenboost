@@ -28,7 +28,11 @@ eigenboost(
 
 \item{control}{Additional settings for the CART trees}
 
-\item{reflections_type}{The type of Dataset reflection to perform.}
+\item{reflections_type}{The type of Dataset reflection to perform. Options include:
+identity, for no data reflections (identical to normal Adaboost),
+eigen, for eigenvector based reflections based on the dominant eigenvector of the class which reduces training error the most,
+random, reflect the dataset in a random direction,
+eigen-random, choose either eigen or random reflections with equal probability.}
 
 \item{tree_depth}{The max depth of the CART trees.}
 }
@@ -60,7 +64,7 @@ X_test <- iris2[-train_indx, 1:4]
 y_test <- as.numeric(iris2$Species[-train_indx])
 
 # Fit model
-model <- eigenboost(X = X_train, y = y_train, tree_depth = 1)
+model <- eigenboost(X = X_train, y = y_train, reflection_every = 3, tree_depth = 1)
 
 # Make predictions
 preds <- predict.eigenboost(model, X_test)
