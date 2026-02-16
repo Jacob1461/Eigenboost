@@ -1,3 +1,13 @@
+#' Print an Eigenboost object
+#'
+#' Pretty print the values of the eigenboost model object.
+#'
+#'
+#' @param x An eigenboost model object
+#' @param ... Not used
+#'
+#'
+#'
 #' @export
 print.eigenboost = function(x, ...){
   print("===========================================")

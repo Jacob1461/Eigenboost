@@ -1,3 +1,54 @@
+#' Adaboost on reflected datasets
+#'
+#' An implementation of adaboost using eigenvector based dataset reflections
+#' using PCA and householder matrices.
+#'
+#' @param X A dataframe or matrix of predictors values.
+#' @param y A response vector of 1 or -1.
+#' @param n_rounds The number of trees in the ensemble.
+#' @param reflection_every Perform a Dataset reflection every this many rounds.
+#' @param verbose Print additional output.
+#' @param control Additional settings for the CART trees
+#' @param reflections_type The type of Dataset reflection to perform.
+#' @param tree_depth The max depth of the CART trees.
+#'
+#'
+#' @references Freund, Y. and Schapire, R. (1997). A decision-theoretic
+#' generalization of online learning and an application to boosting, Journal of
+#'  Computer and System Sciences 55: 119-139.
+#'
+#' @return Returns a eigenboost object containing the alpha values for each tree,
+#' each tree object, the householder matrix corresponding to that tree.
+#'
+#'
+#' @note Adaboost code adapted from JOUSboost implementation.
+#'
+#' @examples
+#' \dontrun{
+#'   set.seed(123)
+#'
+#' # Make iris into a binary class classification dataset
+#' iris2 <- iris[iris$Species != "setosa", ]
+#' rownames(iris2) <- NULL
+#' iris2$Species <- ifelse(iris2$Species == "versicolor", 1, -1)
+#'
+#' # Make training and testing splits
+#' train_indx <- sample(nrow(iris2), 65)
+#' X_train <- iris2[train_indx, 1:4]
+#' y_train <- as.numeric(iris2$Species[train_indx])
+#' X_test <- iris2[-train_indx, 1:4]
+#' y_test <- as.numeric(iris2$Species[-train_indx])
+#'
+#' # Fit model
+#' model <- eigenboost(X = X_train, y = y_train, tree_depth = 1)
+#'
+#' # Make predictions
+#' preds <- predict.eigenboost(model, X_test)
+#'
+#' # Evaluate
+#' accuracy <- mean(preds == y_test)
+#' print(accuracy)
+#' }
 #' @export
 eigenboost = function(X, y, n_rounds = 10, reflection_every = 3, verbose = FALSE,
                          control = NULL, reflections_type = "eigen",tree_depth = 1){
@@ -117,7 +168,7 @@ eigenboost = function(X, y, n_rounds = 10, reflection_every = 3, verbose = FALSE
              }
              ,
              "random" = {
-               v <- mvrnorm(n = 1,
+               v <- MASS::mvrnorm(n = 1,
                             mu = rep(0, n_col),
                             Sigma = diag(n_col))
 
@@ -219,6 +270,18 @@ eigenboost = function(X, y, n_rounds = 10, reflection_every = 3, verbose = FALSE
 
 }
 
+
+#' Create predictions from Eigenboost model
+#'
+#' Aggregates predictions from all trees in the ensemble.
+#'
+#'
+#' @param object An object of type eigenboost
+#' @param new_data A data frame or data matrix with which to create new predictions
+#' @param n_tree Only take the first n_tree many trees in the ensemble to create new prediction
+#'
+#' @return Returns the predicted class in c(-1, 1)
+#'
 #' @export
 predict.eigenboost <- function(object, new_data, n_tree = NULL){
   if(!inherits(object, "eigenboost")){
@@ -231,7 +294,7 @@ predict.eigenboost <- function(object, new_data, n_tree = NULL){
   new_cols_name <- make.names(cols_name)
 
   if(!identical(cols_name, new_cols_name)){
-    warning("Not all column names are Syntactically Valid and have been replaced with make.names()")
+    warning("Not all column names are Valid and have been replaced with make.names()")
     cols_name <- new_cols_name
   }
 
