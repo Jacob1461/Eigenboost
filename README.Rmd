@@ -54,15 +54,15 @@ y_test <- as.numeric(iris2$Species[-train_indx])
 
 # Fit model
 
-model <- eigenboost(X = X_train, y = y_train, reflection_every = 3, reflections_type = "eigen", tree_depth = 1)
+eigen <- eigenboost(X = X_train, y = y_train,n_rounds = 10, reflection_every = 3, reflections_type = "eigen", tree_depth = 1)
 
 
 # Make prediction
 
-preds <- predict.eigenboost(model, X_test)
+eigen_preds <- predict.eigenboost(eigen, X_test, n_tree = 7)
 
 # Evaluate
 
-accuracy <- mean(preds == y_test)
+accuracy <- mean(eigen_preds == y_test)
 accuracy
 ```
