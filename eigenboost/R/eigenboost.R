@@ -1,3 +1,11 @@
+#' @importFrom stats cov
+#' @importFrom MASS mvrnorm
+NULL
+
+
+
+
+
 #' @export
 eigenboost = function(X, y, n_rounds = 10, reflection_every = 3, verbose = FALSE,
                          control = NULL, reflections_type = "eigen",tree_depth = 1){

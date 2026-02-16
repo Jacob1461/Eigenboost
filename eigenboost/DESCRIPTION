@@ -1,6 +1,6 @@
 Package: eigenboost
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Adaboost with Householder Dataset Reflections
 Version: 0.1.0
 Authors@R: c(
     person(
@@ -12,7 +12,7 @@ Authors@R: c(
 Description: Binary supervised learning algorithm based on Adaboost.
     Uses PCA and householder matrices to reflect the dataset in order to allow for
     shallower CART decision trees.
-License: MIT License
+License: usethis::use_mit_license("Jacob Clinton")
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 7.3.3
