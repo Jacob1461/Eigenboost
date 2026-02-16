@@ -287,8 +287,7 @@ eigenboost = function(X, y, n_rounds = 10, reflection_every = 3, verbose = FALSE
 #' @export
 predict.eigenboost <- function(object, new_data, n_tree = NULL){
   if(!inherits(object, "eigenboost")){
-    warning("Object is not of type adaboost_reflections, it is", class(object))
-    stop("Stopping")
+    stop("Object is not of type adaboost_reflections, it is", class(object))
   }
   new_data_matrix <- as.matrix(new_data)
 
